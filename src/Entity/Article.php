@@ -76,18 +76,6 @@ class Article
     }
 
     /**
-     * @param int $id
-     *
-     * @return Article
-     */
-    public function setId(int $id): Article
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getTitle():? string

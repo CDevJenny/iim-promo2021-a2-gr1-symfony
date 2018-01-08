@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -13,6 +13,13 @@ class DefaultController extends Controller
      */
     public function index()
     {
-        return $this->render('homepage.html.twig');
+        $em   = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository(Article::class);
+
+        $articles = $repo->findAll();
+
+        return $this->render('homepage.html.twig', [
+            'articles' => $articles,
+        ]);
     }
 }
