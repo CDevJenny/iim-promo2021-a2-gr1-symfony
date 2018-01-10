@@ -23,13 +23,21 @@ class SecurityController extends Controller
         $registrationForm = $this->createForm(UserRegistrationFormType::class);
         $registrationForm->handleRequest($request);
 
-        if ($registrationForm->isValid()) {
+        if ($registrationForm->isSubmitted() && $registrationForm->isValid()) {
+            $em   = $this->getDoctrine()->getManager();
             $data = $registrationForm->getData();
             $user = new User();
             $user
                 ->setUsername($data['username'])
                 ->setEmail($data['email'])
-                ->setPassword($data['password']);
+                ->setPlainPassword($data['password']);
+
+            $em->persist($user);
+            $em->flush();
+
+            // $argon2id$v=19$m=65536,t=2,p=1$+yfWpJB3v/3XqQIENI2IhQ$2Z9rNrcPbAOOdVrHKteZOhjjh/CqfmIHM10+HPYBpGk
+
+            return $this->redirectToRoute('homepage');
         }
 
         // ['registrationForm' => $registrationForm] === compact($registrationForm)
