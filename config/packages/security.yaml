@@ -1,13 +1,24 @@
 security:
-    # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\User:
+            algorithm: argon2i # Windows => bcrypt
+
     providers:
-        in_memory: { memory: ~ }
+        app_provider:
+            entity:
+                class: App\Entity\User
+                property: username
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            pattern: ^/
             anonymous: ~
+            provider: app_provider
+            http_basic: ~ # TODO remove
+
 
             # activate different ways to authenticate
 
