@@ -96,7 +96,7 @@ bin/console doctrine:schema:update --dump-sql --force
 
 **Email address:** thibaud.bardin+iim[at]gmail.com
 
-Ps: *Do not send me the `vendor/` directory (or -1pt on the final grade)*
+Ps: *Do not send me the `vendor/` directory (or -5pt on the final grade)*
 
 ### General
 
