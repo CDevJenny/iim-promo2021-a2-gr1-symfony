@@ -1,13 +1,17 @@
 security:
     encoders:
         App\Entity\User:
-            algorithm: argon2i # Windows => bcrypt
+            algorithm: argon2i # TODO Windows, replace "argon2i" by "bcrypt".
 
     providers:
         app_provider:
             entity:
                 class: App\Entity\User
                 property: username
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     firewalls:
         dev:
@@ -23,11 +27,6 @@ security:
                 username_parameter: user_login_form[username]
                 password_parameter: user_login_form[password]
 
-
-            # activate different ways to authenticate
-
-            # http_basic: ~
-            # https://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # https://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/admin, roles: ROLE_ADMIN }

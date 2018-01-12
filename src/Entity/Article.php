@@ -47,24 +47,24 @@ class Article
     private $excerpt;
 
     /**
-     * @var \DateTimeImmutable
+     * @var \DateTime
      *
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
-     * @var \DateTimeImmutable
+     * @var \DateTime
      *
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime")
      */
     private $updatedAt;
 
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     /**
@@ -156,19 +156,19 @@ class Article
     }
 
     /**
-     * @return \DateTimeImmutable
+     * @return \DateTime
      */
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @param \DateTimeImmutable $createdAt
+     * @param \DateTime $createdAt
      *
      * @return Article
      */
-    public function setCreatedAt(\DateTimeImmutable $createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -176,19 +176,19 @@ class Article
     }
 
     /**
-     * @return \DateTimeImmutable
+     * @return \DateTime
      */
-    public function getUpdatedAt(): \DateTimeImmutable
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
 
     /**
-     * @param \DateTimeImmutable $updatedAt
+     * @param \DateTime $updatedAt
      *
      * @return Article
      */
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
 
