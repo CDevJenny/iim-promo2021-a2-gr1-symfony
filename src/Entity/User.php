@@ -48,7 +48,7 @@ class User implements AdvancedUserInterface, \Serializable
     private $plainPassword;
 
     /**
-     * TODO Pour les windows changer "json_array" en "simple_array".
+     * TODO Pour les windows changer "json_array" en "array".
      *
      * @var array
      *

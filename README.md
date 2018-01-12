@@ -84,351 +84,94 @@ php bin\console doctrine:schema:update --dump-sql --force
 bin/console doctrine:schema:update --dump-sql --force
 ```
 
+## TODO
+
+### Project
+
+**Final date:** Sunday, January 27, 2018.
+
+**Send method:** 
+* GitHub (if you know how to use it) and email me the repository link.
+* Email me the project via wetransfer directly.
+
+**Email address:** thibaud.bardin+iim[at]gmail.com
+
+Ps: *Do not send me the `vendor/` directory (or -1pt on the final grade)*
+
+### General
+
+Create a tiny shopping website with a front and an admin part (no real selling involved, no cart, ...).  
+You definitely have the right to use the [EasyAdminBundle](https://symfony.com/doc/current/bundles/EasyAdminBundle/index.html)  
+
+> And yes, you'll have to update the `Article` entity.  
+
+**Minimum pages:**
+
+├── /  
+├── /article/{slug-of-the-article OR id-of-the-article}  
+├── /login  
+├── /logout  
+└── /admin  
+
+### Pages
+
+> All pages must have a valid navbar to navigate to all available pages (with context, when not logged, don't display admin pages in navbar).  
+  Plus the username OR email of the logged in user must be present in the navbar instead of "Login".
+
+#### Pages > Homepage, path="/"
+
+Show all articles with a pagination (between 6-12 articles per page).  
+
+Per article display the title, an excerpt, the creation date (and the author of the article).
+
+#### Pages > Article path="/article/{slug}" OR path="/article/{id}" 
+
+Show one article via its id OR [slug](https://github.com/cocur/slugify) with [Slugify Integration with Symfony](https://github.com/cocur/slugify#symfony).    
+
+The page must display the name, the description, the creation date and the author of the article (the username).  
+
+*An image would be much appreciated but need a lot more work (so keep it in mind as a bonus point).*  
+
+> https://symfony.com/doc/current/routing.html  
+
+#### Pages > Login path="/login"
+
+Shows a valid login form (username OR email + password).
+
+#### Pages > Logout path="/logout"
+
+Log out a user and redirect him to the homepage.
+
+#### Pages > Admin
+
+Protect this section to only logged in users (lucky you are, already done the code is).  
+I want to be able to manage entities ([CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) mandatory):
+- users
+- articles
+
+> If you want to try to have a Brand entity, read that before [Doctrine Association in Symfony](https://symfony.com/doc/current/doctrine/associations.html).  
+
+### Design
+
+The following is greatly appreciated:
+
+* [Bootstrap 4](http://getbootstrap.com/docs/4.0/getting-started/introduction/) for design.
+* [FontAwesome](http://fontawesome.io/get-started/) for icons.
+
+Ps: *Don't forget*
+
+### Requirements
+
+You must at least use (and properly configure) the following tools/libraries:
+
+* [Symfony](http://symfony.com/) 😍
+* [Laravel](https://medium.com/@mantasd/guide-to-writing-bad-laravel-code-6c082bb0c68a) and it's °ZERO° 😱
+
+### Good luck ✌️
+
+![Good Luck](http://heyjackass.com/wp-content/uploads/2016/05/lando_goodbye.jpg)
+
 ## Shortcuts Jetbrains (bonus4free)
 
 * Quick open `CMD + MAJ + O` (mac) | `CTRL + N` (windows)
 * Reformat code `CMD + ALT + L` (mac) | `CTRL + ALT + L` (windows)
-
-## User Entity
-
-```php
-<?php
-
-namespace App\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\Table(name="app_user")
- */
-class User implements AdvancedUserInterface, \Serializable
-{
-    /**
-     * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(type="string", length=25, unique=true)
-     */
-    private $username;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(type="string", length=60, unique=true)
-     */
-    private $email;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(type="string", length=128)
-     */
-    private $password;
-
-    /**
-     * @var string|null
-     */
-    private $plainPassword;
-
-    /**
-     * @var array
-     *
-     * @ORM\Column(type="json_array")
-     */
-    private $roles;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $active;
-
-
-    const ROLE_DEFAULT     = 'ROLE_USER';
-    const ROLE_ADMIN       = 'ROLE_ADMIN';
-    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
-
-
-    public function __construct()
-    {
-        $this->active = true;
-        $this->roles  = [];
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param string $username
-     *
-     * @return User
-     */
-    public function setUsername(string $username): User
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
-     *
-     * @return User
-     */
-    public function setEmail(string $email): User
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param string $password
-     *
-     * @return User
-     */
-    public function setPassword(string $password): User
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getPlainPassword(): ?string
-    {
-        return $this->plainPassword;
-    }
-
-    /**
-     * @param null|string $plainPassword
-     *
-     * @return User
-     */
-    public function setPlainPassword(string $plainPassword): User
-    {
-        $this->plainPassword = $plainPassword;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoles(): array
-    {
-        $roles   = $this->roles;
-        $roles[] = static::ROLE_DEFAULT;
-
-        return array_unique($this->roles);
-    }
-
-    /**
-     * @param string $role
-     *
-     * @return bool
-     */
-    public function hasRole(string $role)
-    {
-        return in_array(mb_strtoupper($role), $this->getRoles(), true);
-    }
-
-    /**
-     * @param string $role
-     *
-     * @return User
-     */
-    public function removeRole(string $role): User
-    {
-        if (false !== $key = array_search(mb_strtoupper($role), $this->roles, true)) {
-            unset($this->roles[$key]);
-            $this->roles = array_values($this->roles);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param array $roles
-     *
-     * @return User
-     */
-    public function setRoles(array $roles): User
-    {
-        $this->roles = array_map(
-            function ($role) {
-                return mb_strtoupper($role);
-            },
-            array_unique($roles)
-        );
-
-        return $this;
-    }
-
-    /**
-     * @param string $role
-     *
-     * @return User
-     */
-    public function addRole(string $role): User
-    {
-        $role = mb_strtoupper($role);
-
-        if ($role === static::ROLE_DEFAULT) {
-            return $this;
-        }
-
-        if (!in_array($role, $this->roles, true)) {
-            $this->roles[] = $role;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @see User::getActive()
-     */
-    public function isActive(): bool
-    {
-        return $this->active;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getActive(): bool
-    {
-        return $this->active;
-    }
-
-    /**
-     * @param bool $active
-     *
-     * @return User
-     */
-    public function setActive(bool $active)
-    {
-        $this->active = $active;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isAccountNonExpired(): bool
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isAccountNonLocked(): bool
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCredentialsNonExpired(): bool
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isEnabled(): bool
-    {
-        return $this->active;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSalt(): ?string
-    {
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function eraseCredentials(): void
-    {
-        $this->plainPassword = null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function serialize(): ?string
-    {
-        return serialize([
-            $this->id,
-            $this->username,
-            $this->email,
-            $this->password,
-            $this->active,
-        ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function unserialize($serialized): void
-    {
-        list (
-            $this->id,
-            $this->username,
-            $this->email,
-            $this->password,
-            $this->active
-            ) = unserialize($serialized);
-    }
-}
-```

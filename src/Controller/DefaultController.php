@@ -11,7 +11,7 @@ class DefaultController extends Controller
     /**
      * @Route("/", name="homepage")
      */
-    public function index()
+    public function homepage()
     {
         $em   = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Article::class);
@@ -21,5 +21,21 @@ class DefaultController extends Controller
         return $this->render('homepage.html.twig', [
             'articles' => $articles,
         ]);
+    }
+
+    /**
+     * @Route("/article/{slug}", name="article")
+     *
+     * @param string $slug
+     */
+    public function article(string $slug)
+    {
+        $em      = $this->getDoctrine()->getManager();
+        $repo    = $em->getRepository(Article::class);
+        $article = $repo->findOneBy([
+            'slug' => $slug,
+        ]);
+
+        // 404 ou page qui affiche l'article
     }
 }
