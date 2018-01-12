@@ -17,7 +17,11 @@ security:
             pattern: ^/
             anonymous: ~
             provider: app_provider
-            http_basic: ~ # TODO remove
+            form_login:
+                login_path: login
+                check_path: login
+                username_parameter: user_login_form[username]
+                password_parameter: user_login_form[password]
 
 
             # activate different ways to authenticate

@@ -3,14 +3,37 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserLoginFormType;
 use App\Form\UserRegistrationFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends Controller
 {
+    /**
+     * @Route("/login", name="login")
+     *
+     * @param Request             $request
+     * @param AuthenticationUtils $authUtils
+     *
+     * @return Response
+     */
+    public function login(Request $request, AuthenticationUtils $authUtils)
+    {
+        $error        = $authUtils->getLastAuthenticationError();
+        $lastUsername = $authUtils->getLastUsername();
+        $loginForm    = $this->createForm(UserLoginFormType::class);
+
+        return $this->render('security/login.html.twig', [
+            'last_username' => $lastUsername,
+            'error'         => $error,
+            'loginForm'     => $loginForm->createView(),
+        ]);
+    }
+
     /**
      * @Route("/register", name="register")
      *
@@ -18,7 +41,7 @@ class SecurityController extends Controller
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function register(Request $request)
     {
         $registrationForm = $this->createForm(UserRegistrationFormType::class);
         $registrationForm->handleRequest($request);
@@ -34,8 +57,6 @@ class SecurityController extends Controller
 
             $em->persist($user);
             $em->flush();
-
-            // $argon2id$v=19$m=65536,t=2,p=1$+yfWpJB3v/3XqQIENI2IhQ$2Z9rNrcPbAOOdVrHKteZOhjjh/CqfmIHM10+HPYBpGk
 
             return $this->redirectToRoute('homepage');
         }
